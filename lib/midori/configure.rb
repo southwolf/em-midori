@@ -9,4 +9,9 @@ class Midori::Configure
   set :port, 8080
   set :route_type, :sinatra
   set :before, proc {}
+  
+  # HTTPS configurations
+  set :secure, false
+  set :ssl_key, nil
+  set :ssl_cert, nil
 end

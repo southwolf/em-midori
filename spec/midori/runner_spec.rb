@@ -20,4 +20,24 @@ RSpec.describe Midori::Runner do
       end.to_not raise_error(RuntimeError)
     end
   end
+
+  describe 'Runner with HTTPS' do
+    subject { EXAMPLE_SSL_RUNNER }
+
+    after {
+      subject.stop
+      sleep 1
+    }
+
+    it 'should not stop before started' do
+      expect(subject.stop).to eq(false)
+    end
+
+    it 'should start properly' do
+      expect do
+        Thread.new { subject.start }
+        sleep 1
+      end.to_not raise_error(RuntimeError)
+    end
+  end
 end

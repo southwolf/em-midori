@@ -148,4 +148,21 @@ RSpec.describe Midori::Server do
       end
     end
   end
+
+  describe 'SSL' do
+    subject { EXAMPLE_SSL_RUNNER }
+    
+    before {
+      Thread.new { subject.start }
+      sleep 1
+    }
+
+    it 'should return \'Hello World\' on GET / request' do
+      puts "HERE"
+      sleep 10000
+      Timeout::timeout(1) do
+        expect(Typhoeus.get("https://127.0.0.1:8443/").body).to eq('Hello World')
+      end
+    end
+  end
 end

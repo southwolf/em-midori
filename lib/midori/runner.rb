@@ -16,6 +16,9 @@ class Midori::Runner
     @port = configure.port
     @api = ((api.is_a?Midori::APIEngine) ? api : Midori::APIEngine.new(api, configure.route_type))
     @before = configure.before
+    @secure = configure.secure
+    @ssl_key = configure.ssl_key
+    @ssl_cert = configure.ssl_cert
   end
 
   # Get Midori server whether running
@@ -30,7 +33,13 @@ class Midori::Runner
   def start
     return false if running? || EventLoop.running?
     @logger.info "Midori #{Midori::VERSION} is now running on #{bind}:#{port}".blue
-    @server = TCPServer.new(@bind, @port)
+
+    if @secure
+      @server = Midori::SSL.new(@bind, @port, @ssl_key, @ssl_cert).server
+    else
+      @server = TCPServer.new(@bind, @port)
+    end
+    
     EventLoop.register(@server, :r) do |monitor|
       socket = monitor.io.accept_nonblock
       connection = Midori::Connection.new(socket)

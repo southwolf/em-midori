@@ -4,6 +4,15 @@ class ExampleConfigure < Midori::Configure
   set :port, 8080
 end
 
+class ExampleSSLConfigure < Midori::Configure
+  set :logger, Logger.new(StringIO.new)
+  set :bind, '127.0.0.1'
+  set :port, 8443
+  set :secure, true
+  set :ssl_key, 'spec/midori/fixtures/files/ssl/key.pem'
+  set :ssl_cert, 'spec/midori/fixtures/files/ssl/cert.pem'
+end
+
 class User < Midori::API
   get '/' do
     'User'
@@ -107,3 +116,4 @@ end
 
 EXAMPLE_API_ENGINE = Midori::APIEngine.new(ExampleAPI)
 EXAMPLE_RUNNER = Midori::Runner.new(EXAMPLE_API_ENGINE, ExampleConfigure)
+EXAMPLE_SSL_RUNNER = Midori::Runner.new(EXAMPLE_API_ENGINE, ExampleSSLConfigure)

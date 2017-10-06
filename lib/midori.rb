@@ -7,6 +7,7 @@ require 'http/parser'
 require 'mustermann'
 require 'murasaki'
 require 'socket'
+require 'openssl'
 
 require_relative 'midori_ext'
 require_relative 'midori/core_ext/configurable'
